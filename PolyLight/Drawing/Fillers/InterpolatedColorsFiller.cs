@@ -11,7 +11,7 @@ namespace PolyLight.Drawing.Fillers
 {
     internal class InterpolatedColorsFiller : Filler
     {
-        private Polygon _polygon;
+        protected Polygon _polygon;
         private const float height = 0f;
 
         public InterpolatedColorsFiller(Polygon polygon)

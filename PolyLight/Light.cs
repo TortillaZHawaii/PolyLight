@@ -15,7 +15,7 @@ namespace PolyLight
         public float Ks { get; set; }
         public float Kd { get; set; }
 
-        public Vector3 Position => new Vector3(X, Y, Height);
+        public Vector3 Position => new (X, Y, Height);
 
         public Color Color { get; set; }
 

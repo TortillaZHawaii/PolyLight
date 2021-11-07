@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using System.Drawing;
 using PolyLight.Figures;
-using PolyLight.Drawing;
 using PolyLight.Drawing.Render;
 
 namespace PolyLight.PolyEditingModes
@@ -15,7 +9,7 @@ namespace PolyLight.PolyEditingModes
     {
         private Polygon _poly;
 
-        public AddPolyMode(EditRenderer renderer, Color polygonEdgesColor)
+        public AddPolyMode(Renderer renderer, Color polygonEdgesColor)
             : base(renderer)
         {
             _poly = new Polygon(new Point[0], polygonEdgesColor);

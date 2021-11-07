@@ -5,11 +5,12 @@ using System.Drawing;
 
 namespace PolyLight.Figures
 {
-    internal class Polygon : IDrawable
+    internal class Polygon
     {
         private readonly List<ColoredPoint> _points;
         private readonly Color _defaultColor;
         
+        public Color? Color { get; private set; }
         public IReadOnlyList<ColoredPoint> ColoredPoints => _points;
         public IEnumerable<Point> Points
         {
@@ -25,8 +26,8 @@ namespace PolyLight.Figures
         public int VertexCount => _points.Count;
         public int EdgesCount => _points.Count;
 
-        public Bitmap? Texture { get; set; }
-        public Bitmap? HeightMap { get; set; }
+        public DirectBitmap? Texture { get; set; }
+        public DirectBitmap? HeightMap { get; set; }
 
         public Polygon(IEnumerable<Point> points, Color color)
         {
@@ -90,17 +91,16 @@ namespace PolyLight.Figures
 
         public void SetVertexColor(int vertexNumber, Color newColor)
         {
+            Texture = HeightMap = null;
+            Color = null;
             var coordinates = _points[vertexNumber].Point;
             _points[vertexNumber] = new ColoredPoint(coordinates, newColor);
         }
 
         public void ChangeColor(Color newColor)
         {
-            for(int i = 0; i < _points.Count; ++i)
-            {
-                var coordinates = _points[i].Point;
-                _points[i] = new ColoredPoint(coordinates, newColor);
-            }
+            Texture = HeightMap = null;
+            Color = newColor;
         }
 
         public void RemoveVertex(int vertexNumber)
@@ -116,7 +116,7 @@ namespace PolyLight.Figures
             var (p1, p2) = GetNeighborVertices(edgeNumber);
             var edgePoint = PointExtensions.GetMidColoredPoint(p1, p2);
 
-            InsertVertex(edgeNumber, edgePoint);
+            InsertVertex(edgeNumber + 1, edgePoint);
         }
 
         public void InsertVertex(int edgeNumber, Point point)
@@ -127,7 +127,7 @@ namespace PolyLight.Figures
 
         public void InsertVertex(int edgeNumber, ColoredPoint point)
         {
-            if(edgeNumber < 0)
+            if (edgeNumber < 0) // first vertex
             {
                 _points.Add(point);
             }
@@ -167,11 +167,6 @@ namespace PolyLight.Figures
         {
             var color = _points[vertexNumber].Color;
             _points[vertexNumber] = new ColoredPoint(x, y, color);
-        }
-
-        public void Draw(BitmapDrawer drawer)
-        {
-            drawer.DrawPolygon(this);
         }
     }
 }

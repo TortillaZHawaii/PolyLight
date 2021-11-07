@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PolyLight.Drawing.Drawers;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PolyLight.Drawing.Icons
 {
@@ -23,7 +19,15 @@ namespace PolyLight.Drawing.Icons
             set {  _radius = value / 2; }
         }
 
-        public void Draw(BitmapDrawer drawer)
+        public Color Color { get; set; } = Color.Black;
+
+        public Point TopLeft => new(Point.X - Radius, Point.Y - Radius);
+
+        public Point BottomRight => new(Point.X + Radius, Point.Y + Radius);
+
+        public bool Filled { get; set; } = false;
+
+        public void Draw(IDrawer drawer)
         {
             drawer.DrawCircle(this);
         }

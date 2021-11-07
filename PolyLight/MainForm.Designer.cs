@@ -35,6 +35,8 @@
             this._pauseButton = new System.Windows.Forms.Button();
             this._playButton = new System.Windows.Forms.Button();
             this._lightGroupBox = new System.Windows.Forms.GroupBox();
+            this._mLabel = new System.Windows.Forms.Label();
+            this._mTrackBar = new System.Windows.Forms.TrackBar();
             this._ksLabel = new System.Windows.Forms.Label();
             this._ksTrackBar = new System.Windows.Forms.TrackBar();
             this._kdLabel = new System.Windows.Forms.Label();
@@ -49,16 +51,14 @@
             this._pickColorButton = new System.Windows.Forms.Button();
             this._removeVerticesButton = new System.Windows.Forms.Button();
             this._createPolyButton = new System.Windows.Forms.Button();
-            this._mLabel = new System.Windows.Forms.Label();
-            this._mTrackBar = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this._pictureBox)).BeginInit();
             this._menuGroupBox.SuspendLayout();
             this._animationGroupBox.SuspendLayout();
             this._lightGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._mTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._ksTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._kdTrackBar)).BeginInit();
             this._polygonGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._mTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // _pictureBox
@@ -109,6 +109,7 @@
             // 
             // _pauseButton
             // 
+            this._pauseButton.Enabled = false;
             this._pauseButton.Location = new System.Drawing.Point(81, 22);
             this._pauseButton.Name = "_pauseButton";
             this._pauseButton.Size = new System.Drawing.Size(70, 23);
@@ -145,6 +146,25 @@
             this._lightGroupBox.TabStop = false;
             this._lightGroupBox.Text = "Light";
             // 
+            // _mLabel
+            // 
+            this._mLabel.AutoSize = true;
+            this._mLabel.Location = new System.Drawing.Point(11, 207);
+            this._mLabel.Name = "_mLabel";
+            this._mLabel.Size = new System.Drawing.Size(18, 15);
+            this._mLabel.TabIndex = 10;
+            this._mLabel.Text = "m";
+            // 
+            // _mTrackBar
+            // 
+            this._mTrackBar.Location = new System.Drawing.Point(42, 207);
+            this._mTrackBar.Maximum = 100;
+            this._mTrackBar.Name = "_mTrackBar";
+            this._mTrackBar.Size = new System.Drawing.Size(178, 45);
+            this._mTrackBar.TabIndex = 9;
+            this._mTrackBar.TickFrequency = 10;
+            this._mTrackBar.ValueChanged += new System.EventHandler(this._mTrackBar_ValueChanged);
+            // 
             // _ksLabel
             // 
             this._ksLabel.AutoSize = true;
@@ -162,6 +182,7 @@
             this._ksTrackBar.Size = new System.Drawing.Size(178, 45);
             this._ksTrackBar.TabIndex = 7;
             this._ksTrackBar.TickFrequency = 10;
+            this._ksTrackBar.ValueChanged += new System.EventHandler(this._ksTrackBar_ValueChanged);
             // 
             // _kdLabel
             // 
@@ -180,6 +201,7 @@
             this._kdTrackBar.Size = new System.Drawing.Size(178, 45);
             this._kdTrackBar.TabIndex = 5;
             this._kdTrackBar.TickFrequency = 10;
+            this._kdTrackBar.ValueChanged += new System.EventHandler(this._kdTrackBar_ValueChanged);
             // 
             // _pickLightColorButton
             // 
@@ -234,6 +256,7 @@
             this._pickTextureButton.TabIndex = 5;
             this._pickTextureButton.Text = "Pick Texture";
             this._pickTextureButton.UseVisualStyleBackColor = true;
+            this._pickTextureButton.Click += new System.EventHandler(this._pickTextureButton_Click);
             // 
             // _splitEdgeButton
             // 
@@ -285,24 +308,6 @@
             this._createPolyButton.UseVisualStyleBackColor = true;
             this._createPolyButton.Click += new System.EventHandler(this._createPolyButton_Click);
             // 
-            // _mLabel
-            // 
-            this._mLabel.AutoSize = true;
-            this._mLabel.Location = new System.Drawing.Point(11, 207);
-            this._mLabel.Name = "_mLabel";
-            this._mLabel.Size = new System.Drawing.Size(18, 15);
-            this._mLabel.TabIndex = 10;
-            this._mLabel.Text = "m";
-            // 
-            // _mTrackBar
-            // 
-            this._mTrackBar.Location = new System.Drawing.Point(42, 207);
-            this._mTrackBar.Maximum = 100;
-            this._mTrackBar.Name = "_mTrackBar";
-            this._mTrackBar.Size = new System.Drawing.Size(178, 45);
-            this._mTrackBar.TabIndex = 9;
-            this._mTrackBar.TickFrequency = 10;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -311,16 +316,16 @@
             this.Controls.Add(this._menuGroupBox);
             this.Controls.Add(this._pictureBox);
             this.Name = "MainForm";
-            this.Text = "XAVERY";
+            this.Text = "wysockid";
             ((System.ComponentModel.ISupportInitialize)(this._pictureBox)).EndInit();
             this._menuGroupBox.ResumeLayout(false);
             this._animationGroupBox.ResumeLayout(false);
             this._lightGroupBox.ResumeLayout(false);
             this._lightGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._mTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._ksTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._kdTrackBar)).EndInit();
             this._polygonGroupBox.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this._mTrackBar)).EndInit();
             this.ResumeLayout(false);
 
         }

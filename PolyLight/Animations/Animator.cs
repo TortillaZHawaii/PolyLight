@@ -1,28 +1,27 @@
-﻿using PolyLight.Drawing;
-using PolyLight.Drawing.Drawers;
+﻿using PolyLight.Drawing.Drawers;
 using PolyLight.Figures;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace PolyLight.Animations
 {
     internal class Animator
     {
         private List<PolygonMover> _movers;
-        private FillDrawer _drawer;
-        private Thread? _animation;
+        private IDrawer _drawer;
+        private PictureBox _pictureBox;
 
-        public Animator(IEnumerable<Polygon> polygons, int minSpeed, int maxSpeed, DirectBitmap bitmap, Light light)
+        private Timer _timer;
+        private int lastTick;
+        private int frameRate;
+
+        public Animator(IEnumerable<Polygon> polygons, int minSpeed, int maxSpeed, IDrawer drawer, int width, int height, PictureBox pictureBox)
         {
             _movers = new List<PolygonMover>();
-            _drawer = new FillDrawer(bitmap, light);
+            _drawer = drawer;
 
-            int width = bitmap.Width;
-            int height = bitmap.Height;
             var random = new Random();
 
             foreach(var polygon in polygons)
@@ -33,6 +32,38 @@ namespace PolyLight.Animations
                 var mover = new PolygonMover(polygon, speedX, speedY, width, height);
                 _movers.Add(mover);
             }
+            _pictureBox = pictureBox;
+
+            _timer = new System.Windows.Forms.Timer()
+            {
+                Interval = 30,
+            };
+
+            _timer.Tick += _timer_Tick;
+        }
+
+        private void _timer_Tick(object? sender, EventArgs e)
+        {
+            GenerateFrame();
+            Console.WriteLine($"FPS: {CalculateFrameRate()}");
+        }
+
+        public int CalculateFrameRate()
+        {
+            int secondInMiliseconds = 1000;
+            bool hasSecondPassed = Environment.TickCount - lastTick >= secondInMiliseconds;
+            ++frameRate;
+
+            if(hasSecondPassed)
+            {
+                lastTick = Environment.TickCount;
+                int lastFramerate = frameRate;
+                frameRate = 0;
+
+                return lastFramerate;
+            }
+
+            return frameRate;
         }
 
         public void GenerateFrame()
@@ -43,12 +74,14 @@ namespace PolyLight.Animations
 
         public void DrawFilled()
         {
-            _drawer.Clear();
+            _drawer.Clear(Color.Transparent);
 
             foreach(var mover in _movers)
             {
-                _drawer.Draw(mover.Polygon);
+                _drawer.DrawPolygon(mover.Polygon);
             }
+
+            _pictureBox.Invalidate();
         }
 
         public void Move()
@@ -61,19 +94,13 @@ namespace PolyLight.Animations
 
         public void Play()
         {
-            // start animation thread
-            _animation = new Thread(() =>
-            {
-                while(true)
-                {
-                    GenerateFrame();
-                }
-            });
+            _timer.Start();
         }
 
         public void Pause()
         {
-            _animation?.Suspend();
+            _timer.Stop();
+            _pictureBox.Invalidate();
         }
 
     }

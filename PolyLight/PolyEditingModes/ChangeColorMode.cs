@@ -1,4 +1,5 @@
 ﻿using PolyLight.Drawing;
+using PolyLight.Drawing.Icons;
 using PolyLight.Drawing.Render;
 using PolyLight.Figures;
 using PolyLight.Utilities;
@@ -14,8 +15,49 @@ namespace PolyLight.PolyEditingModes
 {
     internal class ChangeColorMode : EditingMode
     {
-        public ChangeColorMode(EditRenderer renderer) : base(renderer)
+        public ChangeColorMode(Renderer renderer) : base(renderer)
         {
+        }
+
+        public override void Enter()
+        {
+            DrawColoredCirclesOnPolygons();
+            DrawColoredCirclesOnVertieces();
+        }
+
+        protected void DrawColoredCirclesOnVertieces()
+        {
+            foreach (var poly in _renderer.Polygons)
+            {
+                foreach (var point in poly.ColoredPoints)
+                {
+                    var circle = new Circle()
+                    {
+                        Color = point.Color,
+                        Radius = (int)HitboxDetector.HitboxRadius,
+                        Filled = true,
+                        Point = point.Point
+                    };
+
+                    _renderer.ModeDrawables.Add(circle);
+                }
+            }
+        }
+
+        protected void DrawColoredCirclesOnPolygons()
+        {
+            foreach (var poly in _renderer.Polygons)
+            {
+                var circle = new Circle()
+                {
+                    Color = poly.Color ?? Color.White,
+                    Radius = (int)HitboxDetector.HitboxRadius,
+                    Filled = poly.Color != null,
+                    Point = poly.GetMidPoint()
+                };
+
+                _renderer.ModeDrawables.Add(circle);
+            }
         }
 
         public override void HandleMouseClick(MouseEventArgs e)
@@ -39,7 +81,9 @@ namespace PolyLight.PolyEditingModes
                 var poly = hit.Value.hitPolygon;
                 int vertex = hit.Value.vertexIndex;
 
+                _renderer.ClearDrawables();
                 ColorVertex(poly, vertex);
+                Enter();
                 return true;
             }
 
@@ -52,7 +96,9 @@ namespace PolyLight.PolyEditingModes
 
             if(hit != null)
             {
+                _renderer.ClearDrawables();
                 ColorPolygon(hit);
+                Enter();
                 return true;
             }
 

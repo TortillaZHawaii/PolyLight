@@ -5,31 +5,45 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PolyLight.Drawing.Drawers
 {
-    internal class FillDrawer
+    internal class FillDrawer : BitmapDrawer
     {
-        private DirectBitmap _directBitmap;
         private Light _light;
 
-        public FillDrawer(DirectBitmap bitmap, Light light)
+        public FillDrawer(DirectBitmap bitmap, Light light) : base(bitmap)
         {
-            _directBitmap = bitmap;
             _light = light;
         }
 
-        public void Clear()
+        public override void Clear(Color color)
         {
+            for (int i = 0; i < _directBitmap.Width; ++i)
+            {
+                for (int j = 0; j < _directBitmap.Height; ++j)
+                {
+                    _directBitmap.SetPixel(i, j, color);
+                }
+            }
         }
 
-        public void Draw(Polygon polygon)
+        public override void DrawPolygon(Polygon polygon)
         {
+            if(polygon.VertexCount < 3)
+            {
+                base.DrawPolygon(polygon);
+                return;
+            }
+
             if(polygon.Texture != null && polygon.HeightMap != null)
             {
                 DrawWithHeightMap(polygon);
+            }
+            else if(polygon.Color != null)
+            {
+                DrawSolidColored(polygon);
             }
             else
             {
@@ -49,10 +63,16 @@ namespace PolyLight.Drawing.Drawers
             ScanLine(polygon, filler);
         }
 
+        private void DrawSolidColored(Polygon polygon)
+        {
+            var filler = new SolidColorFiller(polygon);
+            ScanLine(polygon, filler);
+        }
+
         private void ScanLine(Polygon polygon, Filler filler)
         {
             var aetTable = PrepareAET(polygon);
-            DrawAetTable(aetTable, polygon.MinHorizontal(), filler);
+            DrawAetTable(aetTable, polygon.MinVertical(), filler);
         }
 
         private List<int>[] PrepareAET(Polygon polygon)

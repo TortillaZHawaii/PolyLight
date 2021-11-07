@@ -1,29 +1,26 @@
-﻿using System;
+﻿using PolyLight.Drawing.Drawers;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PolyLight.Drawing.Render
 {
-    internal class EditRenderer : IRenderer
+    internal class Renderer : IRenderer
     {
         public List<Figures.Polygon> Polygons { get; init; }
         public List<IDrawable> ModeDrawables { get; init; }
         public Light Light { get; init; }
+        public IDrawer Drawer { get; set; }
 
-        private readonly BitmapDrawer _drawer;
         private readonly PictureBox _pictureBox;
         private readonly Color _backgroundColor;
 
-        public EditRenderer(BitmapDrawer drawer, PictureBox pictureBox, Color backgroundColor)
+        public Renderer(IDrawer drawer, PictureBox pictureBox, Color backgroundColor, Light light)
         {
-            Light = new Light();
+            Light = light;
             Polygons = new List<Figures.Polygon>();
             ModeDrawables = new List<IDrawable>();
-            _drawer = drawer;
+            Drawer = drawer;
             _pictureBox = pictureBox;
             _backgroundColor = backgroundColor;
         }
@@ -48,14 +45,14 @@ namespace PolyLight.Drawing.Render
 
         private void ClearBackground()
         {
-            _drawer.Clear(_backgroundColor);
+            Drawer.Clear(_backgroundColor);
         }
 
         private void RedrawDrawables()
         {
             foreach(var drawable in ModeDrawables)
             {
-                drawable.Draw(_drawer);
+                drawable.Draw(Drawer);
             }
         }
 
@@ -63,7 +60,7 @@ namespace PolyLight.Drawing.Render
         {
             foreach(var polygon in Polygons)
             {
-                polygon.Draw(_drawer);
+                Drawer.DrawPolygon(polygon);
             }
         }
     }

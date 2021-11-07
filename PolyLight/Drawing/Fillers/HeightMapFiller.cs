@@ -12,8 +12,8 @@ namespace PolyLight.Drawing.Fillers
     internal class HeightMapFiller : Filler
     {
         private Polygon _polygon;
-        private Bitmap _texture;
-        private Bitmap _heightMap;
+        private DirectBitmap _texture;
+        private DirectBitmap _heightMap;
         private Point _topLeft;
 
         public HeightMapFiller(Polygon polygon)
@@ -48,7 +48,7 @@ namespace PolyLight.Drawing.Fillers
             var left = _heightMap.GetPixel((relative.X - 1 + width) % width, relative.Y);
             var top = _heightMap.GetPixel(relative.X, (relative.Y - 1 + height) % height);
             var right = _heightMap.GetPixel((relative.X + 1) % width, relative.Y);
-            var bottom = _heightMap.GetPixel(relative.X, (relative.Y + 1) % width);
+            var bottom = _heightMap.GetPixel(relative.X, (relative.Y + 1) % height);
 
             // we can assume that since the colors are on the gray scale 0 <= r = g = b <= 255
             var vector = new Vector3()

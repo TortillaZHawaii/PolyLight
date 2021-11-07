@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PolyLight.Drawing.Drawers;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace PolyLight.Drawing
 {
     internal interface IDrawable
     {
-        public void Draw(BitmapDrawer drawer);
+        public void Draw(IDrawer drawer);
     }
 }

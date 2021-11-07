@@ -1,13 +1,7 @@
-﻿using PolyLight.Drawing;
-using PolyLight.Drawing.Render;
+﻿using PolyLight.Drawing.Render;
 using PolyLight.Figures;
 using PolyLight.Utilities;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PolyLight.PolyEditingModes
@@ -17,8 +11,14 @@ namespace PolyLight.PolyEditingModes
         private Polygon? _selectedPoly;
         private int _selectedVertex = -1;
 
-        public MovePolyMode(EditRenderer renderer) : base(renderer)
+        public MovePolyMode(Renderer renderer) : base(renderer)
         {
+        }
+
+        public override void Enter()
+        {
+            DrawCirclesOnVertiecies(Color.HotPink);
+            DrawCirclesOnPolygons(Color.HotPink);
         }
 
         public override void HandleMouseDown(MouseEventArgs e)
@@ -41,6 +41,7 @@ namespace PolyLight.PolyEditingModes
         {
             if(_selectedPoly != null)
             {
+                _renderer.ClearDrawables();
                 if(_selectedVertex != -1)
                 {
                     _selectedPoly.MoveVertexTo(_selectedVertex, e.X, e.Y);
@@ -49,6 +50,7 @@ namespace PolyLight.PolyEditingModes
                 {
                     _selectedPoly.MoveTo(e.X, e.Y);
                 }
+                Enter();
             }
         }
 

@@ -28,6 +28,17 @@ namespace PolyLight.Drawing
             Bitmap = new Bitmap(width, height, width * 4, PixelFormat.Format32bppPArgb, BitsHandle.AddrOfPinnedObject());
         }
 
+        public DirectBitmap(Bitmap bitmap) : this(bitmap.Width, bitmap.Height)
+        {
+            for(int i = 0; i < Width; i++)
+            {
+                for(int j = 0; j < Height; j++)
+                {
+                    SetPixel(i, j, bitmap.GetPixel(i, j));
+                }
+            }
+        }
+
         public void SetPixel(int x, int y, Color color)
         {
             if (x < 0 || y < 0 || x >= Width || y >= Height)
@@ -57,6 +68,7 @@ namespace PolyLight.Drawing
             Disposed = true;
             Bitmap.Dispose();
             BitsHandle.Free();
+            GC.SuppressFinalize(this);
         }
     }
 }

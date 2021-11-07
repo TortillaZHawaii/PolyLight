@@ -1,23 +1,20 @@
 ﻿using PolyLight.Drawing.Icons;
 using PolyLight.Figures;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PolyLight.Drawing
+namespace PolyLight.Drawing.Drawers
 {
-    internal class BitmapDrawer
+    internal class BitmapDrawer : IDrawer
     {
-        DirectBitmap _directBitmap;
+        protected DirectBitmap _directBitmap;
         Pen _pen;
+        protected readonly float _defaultThickness = 2f;
 
         public BitmapDrawer(DirectBitmap directBitmap)
         {
             _directBitmap = directBitmap;
-            _pen = Pens.Black;
+            _pen = new Pen(Color.Black);
         }
 
         public BitmapDrawer(DirectBitmap directBitmap, Pen pen)
@@ -26,34 +23,42 @@ namespace PolyLight.Drawing
             _pen = pen;
         }
 
-        public void Clear(Color color)
+        public virtual void Clear(Color color)
         {
             using var graphics = GetGraphics();
             graphics.Clear(color);
         }
 
-        public void DrawCircle(Circle circle)
+        public virtual void DrawCircle(Circle circle)
         {
             using var graphics = GetGraphics();
-            var left = circle.Point.X - circle.Radius;
-            var top = circle.Point.Y - circle.Radius;
-
-            graphics.DrawEllipse(_pen, left, top, circle.Diameter, circle.Diameter);
+            var topLeft = circle.TopLeft;
+            
+            if(circle.Filled)
+            {
+                var brush = new SolidBrush(circle.Color);
+                graphics.FillEllipse(brush, topLeft.X, topLeft.Y, circle.Diameter, circle.Diameter);
+            }
+            else
+            {
+                var pen = new Pen(circle.Color, _defaultThickness);
+                graphics.DrawEllipse(pen, topLeft.X, topLeft.Y, circle.Diameter, circle.Diameter);
+            }
         }
 
-        public void DrawLine(Point a, Point b)
+        public virtual void DrawLine(Point a, Point b)
         {
             using var graphics = GetGraphics();
             DrawLine(a, b, graphics);
         }
 
-        public void DrawPolygon(Polygon polygon)
+        public virtual void DrawPolygon(Polygon polygon)
         {
             using var graphics = GetGraphics();
             DrawPolygon(polygon, graphics);
         }
 
-        public void DrawPolygons(IEnumerable<Polygon> polygons)
+        public virtual void DrawPolygons(IEnumerable<Polygon> polygons)
         {
             using var graphics = GetGraphics();
             foreach (var polygon in polygons)
