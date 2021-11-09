@@ -34,7 +34,7 @@ namespace PolyLight.Animations
             }
             _pictureBox = pictureBox;
 
-            _timer = new System.Windows.Forms.Timer()
+            _timer = new Timer()
             {
                 Interval = 30,
             };
@@ -45,7 +45,6 @@ namespace PolyLight.Animations
         private void _timer_Tick(object? sender, EventArgs e)
         {
             GenerateFrame();
-            Console.WriteLine($"FPS: {CalculateFrameRate()}");
         }
 
         public int CalculateFrameRate()

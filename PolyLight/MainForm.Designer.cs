@@ -31,6 +31,9 @@
             this._pictureBox = new System.Windows.Forms.PictureBox();
             this._menuGroupBox = new System.Windows.Forms.GroupBox();
             this._animationGroupBox = new System.Windows.Forms.GroupBox();
+            this._speedRangeGroupBox = new System.Windows.Forms.GroupBox();
+            this._maxSpeedRangeLabel = new System.Windows.Forms.Label();
+            this._minSpeedRangeLabel = new System.Windows.Forms.Label();
             this._stopButton = new System.Windows.Forms.Button();
             this._pauseButton = new System.Windows.Forms.Button();
             this._playButton = new System.Windows.Forms.Button();
@@ -51,14 +54,19 @@
             this._pickColorButton = new System.Windows.Forms.Button();
             this._removeVerticesButton = new System.Windows.Forms.Button();
             this._createPolyButton = new System.Windows.Forms.Button();
+            this._minSpeedNumeric = new System.Windows.Forms.NumericUpDown();
+            this._maxSpeedNumeric = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this._pictureBox)).BeginInit();
             this._menuGroupBox.SuspendLayout();
             this._animationGroupBox.SuspendLayout();
+            this._speedRangeGroupBox.SuspendLayout();
             this._lightGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._mTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._ksTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._kdTrackBar)).BeginInit();
             this._polygonGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._minSpeedNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._maxSpeedNumeric)).BeginInit();
             this.SuspendLayout();
             // 
             // _pictureBox
@@ -87,6 +95,7 @@
             // 
             // _animationGroupBox
             // 
+            this._animationGroupBox.Controls.Add(this._speedRangeGroupBox);
             this._animationGroupBox.Controls.Add(this._stopButton);
             this._animationGroupBox.Controls.Add(this._pauseButton);
             this._animationGroupBox.Controls.Add(this._playButton);
@@ -96,6 +105,37 @@
             this._animationGroupBox.TabIndex = 2;
             this._animationGroupBox.TabStop = false;
             this._animationGroupBox.Text = "Animation";
+            // 
+            // _speedRangeGroupBox
+            // 
+            this._speedRangeGroupBox.Controls.Add(this._maxSpeedNumeric);
+            this._speedRangeGroupBox.Controls.Add(this._minSpeedNumeric);
+            this._speedRangeGroupBox.Controls.Add(this._maxSpeedRangeLabel);
+            this._speedRangeGroupBox.Controls.Add(this._minSpeedRangeLabel);
+            this._speedRangeGroupBox.Location = new System.Drawing.Point(6, 51);
+            this._speedRangeGroupBox.Name = "_speedRangeGroupBox";
+            this._speedRangeGroupBox.Size = new System.Drawing.Size(214, 83);
+            this._speedRangeGroupBox.TabIndex = 3;
+            this._speedRangeGroupBox.TabStop = false;
+            this._speedRangeGroupBox.Text = "Speed range";
+            // 
+            // _maxSpeedRangeLabel
+            // 
+            this._maxSpeedRangeLabel.AutoSize = true;
+            this._maxSpeedRangeLabel.Location = new System.Drawing.Point(9, 54);
+            this._maxSpeedRangeLabel.Name = "_maxSpeedRangeLabel";
+            this._maxSpeedRangeLabel.Size = new System.Drawing.Size(62, 15);
+            this._maxSpeedRangeLabel.TabIndex = 1;
+            this._maxSpeedRangeLabel.Text = "Maximum";
+            // 
+            // _minSpeedRangeLabel
+            // 
+            this._minSpeedRangeLabel.AutoSize = true;
+            this._minSpeedRangeLabel.Location = new System.Drawing.Point(9, 25);
+            this._minSpeedRangeLabel.Name = "_minSpeedRangeLabel";
+            this._minSpeedRangeLabel.Size = new System.Drawing.Size(60, 15);
+            this._minSpeedRangeLabel.TabIndex = 0;
+            this._minSpeedRangeLabel.Text = "Minimum";
             // 
             // _stopButton
             // 
@@ -308,6 +348,22 @@
             this._createPolyButton.UseVisualStyleBackColor = true;
             this._createPolyButton.Click += new System.EventHandler(this._createPolyButton_Click);
             // 
+            // _minSpeedNumeric
+            // 
+            this._minSpeedNumeric.Location = new System.Drawing.Point(88, 22);
+            this._minSpeedNumeric.Name = "_minSpeedNumeric";
+            this._minSpeedNumeric.Size = new System.Drawing.Size(120, 23);
+            this._minSpeedNumeric.TabIndex = 2;
+            this._minSpeedNumeric.ValueChanged += new System.EventHandler(this._minSpeedNumeric_ValueChanged);
+            // 
+            // _maxSpeedNumeric
+            // 
+            this._maxSpeedNumeric.Location = new System.Drawing.Point(88, 52);
+            this._maxSpeedNumeric.Name = "_maxSpeedNumeric";
+            this._maxSpeedNumeric.Size = new System.Drawing.Size(120, 23);
+            this._maxSpeedNumeric.TabIndex = 3;
+            this._maxSpeedNumeric.ValueChanged += new System.EventHandler(this._maxSpeedNumeric_ValueChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -320,12 +376,16 @@
             ((System.ComponentModel.ISupportInitialize)(this._pictureBox)).EndInit();
             this._menuGroupBox.ResumeLayout(false);
             this._animationGroupBox.ResumeLayout(false);
+            this._speedRangeGroupBox.ResumeLayout(false);
+            this._speedRangeGroupBox.PerformLayout();
             this._lightGroupBox.ResumeLayout(false);
             this._lightGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._mTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._ksTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._kdTrackBar)).EndInit();
             this._polygonGroupBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this._minSpeedNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._maxSpeedNumeric)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -355,5 +415,10 @@
         private System.Windows.Forms.TrackBar _kdTrackBar;
         private System.Windows.Forms.Label _mLabel;
         private System.Windows.Forms.TrackBar _mTrackBar;
+        private System.Windows.Forms.GroupBox _speedRangeGroupBox;
+        private System.Windows.Forms.Label _maxSpeedRangeLabel;
+        private System.Windows.Forms.Label _minSpeedRangeLabel;
+        private System.Windows.Forms.NumericUpDown _maxSpeedNumeric;
+        private System.Windows.Forms.NumericUpDown _minSpeedNumeric;
     }
 }

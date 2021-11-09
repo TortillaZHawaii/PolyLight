@@ -15,6 +15,9 @@ namespace PolyLight.Drawing.Render
         private readonly PictureBox _pictureBox;
         private readonly Color _backgroundColor;
 
+        private Timer _timer;
+        private bool _dirty = false;
+
         public Renderer(IDrawer drawer, PictureBox pictureBox, Color backgroundColor, Light light)
         {
             Light = light;
@@ -23,14 +26,37 @@ namespace PolyLight.Drawing.Render
             Drawer = drawer;
             _pictureBox = pictureBox;
             _backgroundColor = backgroundColor;
+
+            _timer = new Timer()
+            {
+                Interval = 25,
+            };
+
+            _timer.Tick += _timer_Tick;
+            _timer.Start();
         }
 
-        public void Redraw()
+
+        public void MarkDirty()
+        {
+            _dirty = true;
+        }
+        
+        private void _timer_Tick(object? sender, System.EventArgs e)
+        {
+            if(_dirty)
+            {
+                Redraw();
+            }
+        }
+
+        private void Redraw()
         {
             ClearBackground();
             RedrawPolygons();
             RedrawDrawables();
             UpdateDisplay();
+            _dirty = false;
         }
 
         public void ClearDrawables()

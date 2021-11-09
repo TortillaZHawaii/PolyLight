@@ -23,7 +23,7 @@ namespace PolyLight.PolyEditingModes
         public virtual void HandleMouseUp(MouseEventArgs e) { }
         public virtual void HandleMouseDown(MouseEventArgs e) { }
         public virtual void HandleMouseMove(MouseEventArgs e) { }
-        public virtual void Enter() { _renderer.Redraw(); }
+        public virtual void Enter() { _renderer.MarkDirty(); }
         public virtual void Exit() { _renderer.ModeDrawables.Clear(); }
 
         protected virtual void DrawCirclesOnVertiecies(Color color)

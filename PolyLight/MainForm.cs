@@ -29,6 +29,8 @@ namespace PolyLight
         private float _kd => (float)_kdTrackBar.Value / _kdTrackBar.Maximum;
         private float _ks => (float)_ksTrackBar.Value / _ksTrackBar.Maximum;
         private int _m => _mTrackBar.Value;
+        private int _minSpeed = 2;
+        private int _maxSpeed = 10;
 
         public MainForm()
         {
@@ -48,6 +50,8 @@ namespace PolyLight
 
             _pictureBox.Image = bitmap.Bitmap;
             _renderer = new Renderer(_drawer, _pictureBox, backgroundColor, light);
+            _minSpeedNumeric.Value = _minSpeed;
+            _maxSpeedNumeric.Value = _maxSpeed;
         }
 
         private void _createPolyButton_Click(object sender, EventArgs e)
@@ -85,7 +89,7 @@ namespace PolyLight
             _mode?.Exit();
             _mode = mode;
             _mode?.Enter();
-            _renderer.Redraw();
+            _renderer.MarkDirty();
         }
 
         private void _pictureBox_MouseClick(object sender, MouseEventArgs e)
@@ -123,7 +127,7 @@ namespace PolyLight
         {
             if(_mode != null)
             {
-                _renderer.Redraw();
+                _renderer.MarkDirty();
             }
         }
 
@@ -143,7 +147,8 @@ namespace PolyLight
         private void CreateAnimator()
         {
             var polies = _renderer.Polygons;
-            _animator = new Animator(polies, 2, 10, _drawer, _pictureBox.Width, _pictureBox.Height, _pictureBox);
+            _animator = new Animator(polies,
+                _minSpeed, _maxSpeed, _drawer, _pictureBox.Width, _pictureBox.Height, _pictureBox);
         }
 
         private void _pauseButton_Click(object sender, EventArgs e)
@@ -166,6 +171,7 @@ namespace PolyLight
         {
             _polygonGroupBox.Enabled = status;
             _lightGroupBox.Enabled = status;
+            _speedRangeGroupBox.Enabled = status;
         }
 
         private void _pickLightColorButton_Click(object sender, EventArgs e)
@@ -181,7 +187,7 @@ namespace PolyLight
             {
                 _renderer.Light.Color = dialog.Color;
             }
-            _renderer.Redraw();
+            _renderer.MarkDirty();
         }
 
         private void _moveLightButton_Click(object sender, EventArgs e)
@@ -202,31 +208,52 @@ namespace PolyLight
                 _renderer.Light.Height = dialog.Value;
             }
 
-            _renderer.Redraw();
+            _renderer.MarkDirty();
         }
 
         private void _kdTrackBar_ValueChanged(object sender, EventArgs e)
         {
             _renderer.Light.Kd = _kd;
-            _renderer.Redraw();
+            _renderer.MarkDirty();
         }
 
         private void _ksTrackBar_ValueChanged(object sender, EventArgs e)
         {
             _renderer.Light.Ks = _ks;
-            _renderer.Redraw();
+            _renderer.MarkDirty();
         }
 
         private void _mTrackBar_ValueChanged(object sender, EventArgs e)
         {
             _renderer.Light.M = _m;
-            _renderer.Redraw();
+            _renderer.MarkDirty();
         }
 
         private void _pickTextureButton_Click(object sender, EventArgs e)
         {
             var newMode = new AddTexturesMode(_renderer);
             SetMode(newMode);
+        }
+
+        private void _minSpeedNumeric_ValueChanged(object sender, EventArgs e)
+        {
+            _minSpeed = (int)_minSpeedNumeric.Value;
+            if(_maxSpeed < _minSpeed)
+            {
+                // should be in setter
+                _maxSpeed = _minSpeed;
+                _maxSpeedNumeric.Value = _maxSpeed;
+            }
+        }
+
+        private void _maxSpeedNumeric_ValueChanged(object sender, EventArgs e)
+        {
+            _maxSpeed = (int)_maxSpeedNumeric.Value;
+            if(_maxSpeed < _minSpeed)
+            {
+                _minSpeed = _maxSpeed;
+                _minSpeedNumeric.Value = _minSpeed;
+            }
         }
     }
 }
