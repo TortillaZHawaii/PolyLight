@@ -1,4 +1,5 @@
 ﻿using PolyLight.Drawing;
+using PolyLight.Drawing.Icons;
 using PolyLight.Drawing.Render;
 using PolyLight.Figures;
 using PolyLight.Utilities;
@@ -18,6 +19,22 @@ namespace PolyLight.PolyEditingModes
             DrawCirclesOnPolygons(Color.Yellow);
         }
 
+        protected override void DrawCirclesOnPolygons(Color color)
+        {
+            foreach (var poly in _renderer.Polygons)
+            {
+                var circle = new Circle()
+                {
+                    Color = color,
+                    Radius = (int)HitboxDetector.HitboxRadius,
+                    Filled = poly.Texture != null && poly.HeightMap != null,
+                    Point = poly.GetMidPoint()
+                };
+
+                _renderer.ModeDrawables.Add(circle);
+            }
+        }
+
         public override void HandleMouseClick(MouseEventArgs e)
         {
             IsHitOnPolyMidHandled(e.Location);
@@ -31,19 +48,27 @@ namespace PolyLight.PolyEditingModes
             {
                 LoadTextures(hitPolygon);
 
+                ReloadIcons();
+
                 return true;
             }
 
             return false;
         }
 
-        private void LoadTextures(Polygon poly)
+        private void ReloadIcons()
+        {
+            Exit();
+            Enter();
+        }
+
+        private static void LoadTextures(Polygon poly)
         {
             poly.Texture = GetBitmapFromDialog("Pick texture");
             poly.HeightMap = GetBitmapFromDialog("Pick height map");
         }
 
-        private DirectBitmap? GetBitmapFromDialog(string title)
+        private static DirectBitmap? GetBitmapFromDialog(string title)
         {
             var dialog = new OpenFileDialog()
             {

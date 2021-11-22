@@ -24,7 +24,7 @@ namespace PolyLight
         private readonly Renderer _renderer;
         private Animator? _animator;
 
-        private IDrawer _drawer;
+        private readonly IDrawer _drawer;
 
         private float _kd => (float)_kdTrackBar.Value / _kdTrackBar.Maximum;
         private float _ks => (float)_ksTrackBar.Value / _ksTrackBar.Maximum;
@@ -43,42 +43,51 @@ namespace PolyLight
             {
                 Color = Color.White,
                 Height = 100,
-                Point = new(_pictureBox.Width / 2, _pictureBox.Height / 2)
+                Point = new(_pictureBox.Width / 2, _pictureBox.Height / 2),
+                Kd = 0.15f,
+                Ks = 0.2f,
+                M = 1,
             };
-            //_drawer = new BitmapDrawer(bitmap);
+
             _drawer = new FillDrawer(bitmap, light);
 
             _pictureBox.Image = bitmap.Bitmap;
             _renderer = new Renderer(_drawer, _pictureBox, backgroundColor, light);
+            
             _minSpeedNumeric.Value = _minSpeed;
             _maxSpeedNumeric.Value = _maxSpeed;
+            
+            _ksTrackBar.Value = (int)(light.Ks * _ksTrackBar.Maximum);
+            _kdTrackBar.Value = (int)(light.Kd * _kdTrackBar.Maximum);
+            _mTrackBar.Value = light.M;
+            _lightHeightNumericUpDown.Value = light.Height;
         }
 
-        private void _createPolyButton_Click(object sender, EventArgs e)
+        private void CreatePolyButton_Click(object sender, EventArgs e)
         {
             var newMode = new AddPolyMode(_renderer, Color.White);
             SetMode(newMode);
         }
 
-        private void _removeVerticesButton_Click(object sender, EventArgs e)
+        private void RemoveVerticesButton_Click(object sender, EventArgs e)
         {
             var newMode = new RemoveVerticesMode(_renderer);
             SetMode(newMode);
         }
 
-        private void _splitEdgeButton_Click(object sender, EventArgs e)
+        private void SplitEdgeButton_Click(object sender, EventArgs e)
         {
             var newMode = new SplitEdgeMode(_renderer);
             SetMode(newMode);
         }
 
-        private void _movePolygonButton_Click(object sender, EventArgs e)
+        private void MovePolygonButton_Click(object sender, EventArgs e)
         {
             var newMode = new MovePolyMode(_renderer);
             SetMode(newMode);
         }
 
-        private void _pickColorButton_Click(object sender, EventArgs e)
+        private void PickColorButton_Click(object sender, EventArgs e)
         {
             var newMode = new ChangeColorMode(_renderer);
             SetMode(newMode);
@@ -92,7 +101,7 @@ namespace PolyLight
             _renderer.MarkDirty();
         }
 
-        private void _pictureBox_MouseClick(object sender, MouseEventArgs e)
+        private void PictureBox_MouseClick(object sender, MouseEventArgs e)
         {
             if(e.Button == MouseButtons.Left)
             {
@@ -105,19 +114,19 @@ namespace PolyLight
             RedrawWhenInMode();
         }
 
-        private void _pictureBox_MouseMove(object sender, MouseEventArgs e)
+        private void PictureBox_MouseMove(object sender, MouseEventArgs e)
         {
             _mode?.HandleMouseMove(e);
             RedrawWhenInMode();
         }
 
-        private void _pictureBox_MouseUp(object sender, MouseEventArgs e)
+        private void PictureBox_MouseUp(object sender, MouseEventArgs e)
         {
             _mode?.HandleMouseUp(e);
             RedrawWhenInMode();
         }
 
-        private void _pictureBox_MouseDown(object sender, MouseEventArgs e)
+        private void PictureBox_MouseDown(object sender, MouseEventArgs e)
         {
             _mode?.HandleMouseDown(e);
             RedrawWhenInMode();
@@ -131,7 +140,7 @@ namespace PolyLight
             }
         }
 
-        private void _playButton_Click(object sender, EventArgs e)
+        private void PlayButton_Click(object sender, EventArgs e)
         {
             SetMode(null);
             if(_animator == null)
@@ -151,14 +160,14 @@ namespace PolyLight
                 _minSpeed, _maxSpeed, _drawer, _pictureBox.Width, _pictureBox.Height, _pictureBox);
         }
 
-        private void _pauseButton_Click(object sender, EventArgs e)
+        private void PauseButton_Click(object sender, EventArgs e)
         {
             _animator?.Pause();
             _playButton.Enabled = true;
             _pauseButton.Enabled = false;
         }
 
-        private void _stopButton_Click(object sender, EventArgs e)
+        private void StopButton_Click(object sender, EventArgs e)
         {
             _animator?.Pause();
             _animator = null;
@@ -174,7 +183,7 @@ namespace PolyLight
             _speedRangeGroupBox.Enabled = status;
         }
 
-        private void _pickLightColorButton_Click(object sender, EventArgs e)
+        private void PickLightColorButton_Click(object sender, EventArgs e)
         {
             SetMode(null);
 
@@ -190,13 +199,13 @@ namespace PolyLight
             _renderer.MarkDirty();
         }
 
-        private void _moveLightButton_Click(object sender, EventArgs e)
+        private void MoveLightButton_Click(object sender, EventArgs e)
         {
             var newMode = new LightMoveMode(_renderer);
             SetMode(newMode);
         }
 
-        private void _setLightHeightButton_Click(object sender, EventArgs e)
+        private void SetLightHeightButton_Click(object sender, EventArgs e)
         {
             SetMode(null);
 
@@ -211,31 +220,31 @@ namespace PolyLight
             _renderer.MarkDirty();
         }
 
-        private void _kdTrackBar_ValueChanged(object sender, EventArgs e)
+        private void KdTrackBar_ValueChanged(object sender, EventArgs e)
         {
             _renderer.Light.Kd = _kd;
             _renderer.MarkDirty();
         }
 
-        private void _ksTrackBar_ValueChanged(object sender, EventArgs e)
+        private void KsTrackBar_ValueChanged(object sender, EventArgs e)
         {
             _renderer.Light.Ks = _ks;
             _renderer.MarkDirty();
         }
 
-        private void _mTrackBar_ValueChanged(object sender, EventArgs e)
+        private void MTrackBar_ValueChanged(object sender, EventArgs e)
         {
             _renderer.Light.M = _m;
             _renderer.MarkDirty();
         }
 
-        private void _pickTextureButton_Click(object sender, EventArgs e)
+        private void PickTextureButton_Click(object sender, EventArgs e)
         {
             var newMode = new AddTexturesMode(_renderer);
             SetMode(newMode);
         }
 
-        private void _minSpeedNumeric_ValueChanged(object sender, EventArgs e)
+        private void MinSpeedNumeric_ValueChanged(object sender, EventArgs e)
         {
             _minSpeed = (int)_minSpeedNumeric.Value;
             if(_maxSpeed < _minSpeed)
@@ -246,7 +255,7 @@ namespace PolyLight
             }
         }
 
-        private void _maxSpeedNumeric_ValueChanged(object sender, EventArgs e)
+        private void MaxSpeedNumeric_ValueChanged(object sender, EventArgs e)
         {
             _maxSpeed = (int)_maxSpeedNumeric.Value;
             if(_maxSpeed < _minSpeed)
@@ -254,6 +263,14 @@ namespace PolyLight
                 _minSpeed = _maxSpeed;
                 _minSpeedNumeric.Value = _minSpeed;
             }
+        }
+
+        private void LightHeightNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            int newLightHeight = (int)_lightHeightNumericUpDown.Value;
+            _renderer.Light.Height = newLightHeight;
+
+            _renderer.MarkDirty();
         }
     }
 }

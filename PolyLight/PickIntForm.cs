@@ -23,13 +23,13 @@ namespace PolyLight.Figures
             _textBox.Text = $"{value}";
         }
 
-        private void _okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
             Value = int.Parse(_textBox.Text);
         }
 
-        private void _cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
         }

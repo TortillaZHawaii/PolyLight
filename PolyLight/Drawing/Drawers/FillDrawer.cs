@@ -77,6 +77,7 @@ namespace PolyLight.Drawing.Drawers
 
         private List<int>[] PrepareAET(Polygon polygon)
         {
+            // sort points
             var points = polygon.Points.AsParallel().OrderBy(p => p.Y).ToArray();
             var pointsList = new LinkedList<Point>(points);
 

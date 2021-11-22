@@ -1,0 +1,24 @@
+﻿Z każdego trybu edycji można wyjść klikając PPM.
+
+Polygon:
+	Create Polygon - tryb tworzenia wielokątów, klikamy w kolejne punkty, tam gdzie chcemy postawić wierzchołek.
+	Remove Vertices - usuwa kliknięty wierzchołek (jeśli są trzy wierzchołki w wielokącie to nic nie robi) lub cały wielokąt (nie wypełnione koło).
+	Split Edges - dzieli krawędź, stawiając na jej środku wierzchołek.
+	Move - przesuwa (drag and drop). Wypełnione to wierzchołki, puste w środku to całe wielokąty.
+	Pick Color - zmienia kolor:
+		- na wierzchołkach - po zmianie koloru wierzchołka kolor całej figury jest zapominany,
+		- wielokąta - ustawia jednolity kolor dla całego wielokąta (informacja o starych kolorach wierzchołków jest nadal przechowywana). Gdy wielokąt nie ma jednolitego koloru, kółko w środku jest nie wypełnione, wpp jest koloru wielokąta.
+	Pick Texture - ustawia teksturę:
+		- najpierw wybieramy teksturę koloru, następnie wysokości. Brak tekstury oznaczany jest brakiem wypełnienia, wpp wypełniony. Do zadania dołączone są przykładowe tekstury, szczególnie dobrze jest widać gdy wybierzemy na teksturę wysokości i koloru Caracalla_MAN_Napoli...jpg
+
+Light:
+	Move - ustawia w miejscu kliknięcia źródło światła. Oznaczane wielkim kołem.
+	Pick Color - wybiera kolor światła.
+	Height - zmienia wysokość.
+	k_d, k_s, m - parametry do oświetlania wszystkich wielokątów (model Lamberta).
+
+Animation:
+	Play - zaczyna animacje.
+	Pause - wstrzymuje animacje.
+	Stop - zatrzymanie animacji i powrót do edycji.
+	Speed range - ustalanie zakresu prędkości wielokątów.

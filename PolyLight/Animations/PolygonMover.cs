@@ -11,31 +11,38 @@ namespace PolyLight.Animations
         private int _speedX;
         private int _speedY;
 
-        private int _bitmapWidth;
-        private int _bitmapHeight;
+        private bool _isOutsideX = false;
+        private bool _isOutsideY = false;
 
-        private Polygon _polygon;
+        private readonly int _minSpeed;
+        private readonly int _maxSpeed;
 
-        public PolygonMover(Polygon polygon, int speedX, int speedY, Bitmap bitmap)
+        private readonly int _bitmapWidth;
+        private readonly int _bitmapHeight;
+
+        private readonly Polygon _polygon;
+        private readonly Random _rng;
+
+        public PolygonMover(Polygon polygon, int minSpeed, int maxSpeed, Random rng, Bitmap bitmap) : 
+            this(polygon, minSpeed, maxSpeed, rng, bitmap.Width, bitmap.Height)
         {
-            _polygon = polygon;
 
-            _bitmapHeight = bitmap.Height;
-            _bitmapWidth = bitmap.Width;
-
-            _speedX = speedX;
-            _speedY = speedY;
         }
 
-        public PolygonMover(Polygon polygon, int speedX, int speedY, int bitmapWidth, int bitmapHeight)
+        public PolygonMover(Polygon polygon, int minSpeed, int maxSpeed, Random rng, int bitmapWidth, int bitmapHeight)
         {
             _polygon = polygon;
 
             _bitmapHeight = bitmapHeight;
             _bitmapWidth = bitmapWidth;
 
-            _speedX = speedX;
-            _speedY = speedY;
+            _minSpeed = minSpeed;
+            _maxSpeed = maxSpeed;
+
+            _rng = rng;
+
+            _speedX = GetRandomSpeed();
+            _speedY = GetRandomSpeed();
         }
 
         public void Move()
@@ -54,24 +61,58 @@ namespace PolyLight.Animations
         {
             if (IsOutsideRight())
             {
+                _isOutsideX = true;
                 _speedX = -Math.Abs(_speedX);
+                return;
             }
-            else if (IsOutsideLeft())
+            
+            if (IsOutsideLeft())
             {
+                _isOutsideX = true;
                 _speedX = Math.Abs(_speedX);
+                return;
             }
+
+            // to prevent jittering when part of the polygon is outside
+            ChangeSpeedIfCameBackToViewableArea(ref _isOutsideX, ref _speedY);
         }
 
         private void AdjustVerticalDirection()
         {
             if (IsOutsideTop())
             {
+                _isOutsideY = true;
                 _speedY = Math.Abs(_speedY);
+                return;
             }
-            else if (IsOutsideBottom())
+            if (IsOutsideBottom())
             {
+                _isOutsideY = true;
                 _speedY = -Math.Abs(_speedY);
+                return;
             }
+
+            ChangeSpeedIfCameBackToViewableArea(ref _isOutsideY, ref _speedX);
+        }
+
+        private void ChangeSpeedIfCameBackToViewableArea(ref bool isOutside, ref int speed)
+        {
+            if(isOutside)
+            {
+                isOutside = false;
+                speed = GetRandomSpeed();
+            }
+        }
+
+        private int GetRandomSpeed()
+        {
+            return _rng.Next(_minSpeed, _maxSpeed) * GetRandomSign();
+        }
+
+        private int GetRandomSign()
+        {
+            int sign = _rng.Next(0, 2) * 2 - 1;
+            return sign;
         }
 
         private bool IsOutsideRight()

@@ -26,10 +26,7 @@ namespace PolyLight.Animations
 
             foreach(var polygon in polygons)
             {
-                int speedX = random.Next(minSpeed, maxSpeed);
-                int speedY = random.Next(minSpeed, maxSpeed);
-
-                var mover = new PolygonMover(polygon, speedX, speedY, width, height);
+                var mover = new PolygonMover(polygon, minSpeed, maxSpeed, random, width, height);
                 _movers.Add(mover);
             }
             _pictureBox = pictureBox;

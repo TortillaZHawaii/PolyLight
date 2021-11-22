@@ -32,6 +32,8 @@
             this._menuGroupBox = new System.Windows.Forms.GroupBox();
             this._animationGroupBox = new System.Windows.Forms.GroupBox();
             this._speedRangeGroupBox = new System.Windows.Forms.GroupBox();
+            this._maxSpeedNumeric = new System.Windows.Forms.NumericUpDown();
+            this._minSpeedNumeric = new System.Windows.Forms.NumericUpDown();
             this._maxSpeedRangeLabel = new System.Windows.Forms.Label();
             this._minSpeedRangeLabel = new System.Windows.Forms.Label();
             this._stopButton = new System.Windows.Forms.Button();
@@ -45,7 +47,6 @@
             this._kdLabel = new System.Windows.Forms.Label();
             this._kdTrackBar = new System.Windows.Forms.TrackBar();
             this._pickLightColorButton = new System.Windows.Forms.Button();
-            this._setLightHeightButton = new System.Windows.Forms.Button();
             this._moveLightButton = new System.Windows.Forms.Button();
             this._polygonGroupBox = new System.Windows.Forms.GroupBox();
             this._pickTextureButton = new System.Windows.Forms.Button();
@@ -54,19 +55,20 @@
             this._pickColorButton = new System.Windows.Forms.Button();
             this._removeVerticesButton = new System.Windows.Forms.Button();
             this._createPolyButton = new System.Windows.Forms.Button();
-            this._minSpeedNumeric = new System.Windows.Forms.NumericUpDown();
-            this._maxSpeedNumeric = new System.Windows.Forms.NumericUpDown();
+            this._lightHeightNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this._heightLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this._pictureBox)).BeginInit();
             this._menuGroupBox.SuspendLayout();
             this._animationGroupBox.SuspendLayout();
             this._speedRangeGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._maxSpeedNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._minSpeedNumeric)).BeginInit();
             this._lightGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._mTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._ksTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._kdTrackBar)).BeginInit();
             this._polygonGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._minSpeedNumeric)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._maxSpeedNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._lightHeightNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // _pictureBox
@@ -76,10 +78,10 @@
             this._pictureBox.Size = new System.Drawing.Size(841, 707);
             this._pictureBox.TabIndex = 0;
             this._pictureBox.TabStop = false;
-            this._pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this._pictureBox_MouseClick);
-            this._pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this._pictureBox_MouseDown);
-            this._pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this._pictureBox_MouseMove);
-            this._pictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this._pictureBox_MouseUp);
+            this._pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseClick);
+            this._pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseDown);
+            this._pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseMove);
+            this._pictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
             // _menuGroupBox
             // 
@@ -119,6 +121,22 @@
             this._speedRangeGroupBox.TabStop = false;
             this._speedRangeGroupBox.Text = "Speed range";
             // 
+            // _maxSpeedNumeric
+            // 
+            this._maxSpeedNumeric.Location = new System.Drawing.Point(88, 52);
+            this._maxSpeedNumeric.Name = "_maxSpeedNumeric";
+            this._maxSpeedNumeric.Size = new System.Drawing.Size(120, 23);
+            this._maxSpeedNumeric.TabIndex = 3;
+            this._maxSpeedNumeric.ValueChanged += new System.EventHandler(this.MaxSpeedNumeric_ValueChanged);
+            // 
+            // _minSpeedNumeric
+            // 
+            this._minSpeedNumeric.Location = new System.Drawing.Point(88, 22);
+            this._minSpeedNumeric.Name = "_minSpeedNumeric";
+            this._minSpeedNumeric.Size = new System.Drawing.Size(120, 23);
+            this._minSpeedNumeric.TabIndex = 2;
+            this._minSpeedNumeric.ValueChanged += new System.EventHandler(this.MinSpeedNumeric_ValueChanged);
+            // 
             // _maxSpeedRangeLabel
             // 
             this._maxSpeedRangeLabel.AutoSize = true;
@@ -145,7 +163,7 @@
             this._stopButton.TabIndex = 2;
             this._stopButton.Text = "Stop";
             this._stopButton.UseVisualStyleBackColor = true;
-            this._stopButton.Click += new System.EventHandler(this._stopButton_Click);
+            this._stopButton.Click += new System.EventHandler(this.StopButton_Click);
             // 
             // _pauseButton
             // 
@@ -156,7 +174,7 @@
             this._pauseButton.TabIndex = 1;
             this._pauseButton.Text = "Pause";
             this._pauseButton.UseVisualStyleBackColor = true;
-            this._pauseButton.Click += new System.EventHandler(this._pauseButton_Click);
+            this._pauseButton.Click += new System.EventHandler(this.PauseButton_Click);
             // 
             // _playButton
             // 
@@ -166,10 +184,12 @@
             this._playButton.TabIndex = 0;
             this._playButton.Text = "Play";
             this._playButton.UseVisualStyleBackColor = true;
-            this._playButton.Click += new System.EventHandler(this._playButton_Click);
+            this._playButton.Click += new System.EventHandler(this.PlayButton_Click);
             // 
             // _lightGroupBox
             // 
+            this._lightGroupBox.Controls.Add(this._lightHeightNumericUpDown);
+            this._lightGroupBox.Controls.Add(this._heightLabel);
             this._lightGroupBox.Controls.Add(this._mLabel);
             this._lightGroupBox.Controls.Add(this._mTrackBar);
             this._lightGroupBox.Controls.Add(this._ksLabel);
@@ -177,7 +197,6 @@
             this._lightGroupBox.Controls.Add(this._kdLabel);
             this._lightGroupBox.Controls.Add(this._kdTrackBar);
             this._lightGroupBox.Controls.Add(this._pickLightColorButton);
-            this._lightGroupBox.Controls.Add(this._setLightHeightButton);
             this._lightGroupBox.Controls.Add(this._moveLightButton);
             this._lightGroupBox.Location = new System.Drawing.Point(6, 227);
             this._lightGroupBox.Name = "_lightGroupBox";
@@ -203,7 +222,7 @@
             this._mTrackBar.Size = new System.Drawing.Size(178, 45);
             this._mTrackBar.TabIndex = 9;
             this._mTrackBar.TickFrequency = 10;
-            this._mTrackBar.ValueChanged += new System.EventHandler(this._mTrackBar_ValueChanged);
+            this._mTrackBar.ValueChanged += new System.EventHandler(this.MTrackBar_ValueChanged);
             // 
             // _ksLabel
             // 
@@ -222,7 +241,7 @@
             this._ksTrackBar.Size = new System.Drawing.Size(178, 45);
             this._ksTrackBar.TabIndex = 7;
             this._ksTrackBar.TickFrequency = 10;
-            this._ksTrackBar.ValueChanged += new System.EventHandler(this._ksTrackBar_ValueChanged);
+            this._ksTrackBar.ValueChanged += new System.EventHandler(this.KsTrackBar_ValueChanged);
             // 
             // _kdLabel
             // 
@@ -241,27 +260,17 @@
             this._kdTrackBar.Size = new System.Drawing.Size(178, 45);
             this._kdTrackBar.TabIndex = 5;
             this._kdTrackBar.TickFrequency = 10;
-            this._kdTrackBar.ValueChanged += new System.EventHandler(this._kdTrackBar_ValueChanged);
+            this._kdTrackBar.ValueChanged += new System.EventHandler(this.KdTrackBar_ValueChanged);
             // 
             // _pickLightColorButton
             // 
-            this._pickLightColorButton.Location = new System.Drawing.Point(6, 80);
+            this._pickLightColorButton.Location = new System.Drawing.Point(6, 51);
             this._pickLightColorButton.Name = "_pickLightColorButton";
             this._pickLightColorButton.Size = new System.Drawing.Size(214, 23);
             this._pickLightColorButton.TabIndex = 4;
             this._pickLightColorButton.Text = "Pick Color";
             this._pickLightColorButton.UseVisualStyleBackColor = true;
-            this._pickLightColorButton.Click += new System.EventHandler(this._pickLightColorButton_Click);
-            // 
-            // _setLightHeightButton
-            // 
-            this._setLightHeightButton.Location = new System.Drawing.Point(6, 51);
-            this._setLightHeightButton.Name = "_setLightHeightButton";
-            this._setLightHeightButton.Size = new System.Drawing.Size(214, 23);
-            this._setLightHeightButton.TabIndex = 1;
-            this._setLightHeightButton.Text = "Set Height";
-            this._setLightHeightButton.UseVisualStyleBackColor = true;
-            this._setLightHeightButton.Click += new System.EventHandler(this._setLightHeightButton_Click);
+            this._pickLightColorButton.Click += new System.EventHandler(this.PickLightColorButton_Click);
             // 
             // _moveLightButton
             // 
@@ -271,7 +280,7 @@
             this._moveLightButton.TabIndex = 0;
             this._moveLightButton.Text = "Move";
             this._moveLightButton.UseVisualStyleBackColor = true;
-            this._moveLightButton.Click += new System.EventHandler(this._moveLightButton_Click);
+            this._moveLightButton.Click += new System.EventHandler(this.MoveLightButton_Click);
             // 
             // _polygonGroupBox
             // 
@@ -296,7 +305,7 @@
             this._pickTextureButton.TabIndex = 5;
             this._pickTextureButton.Text = "Pick Texture";
             this._pickTextureButton.UseVisualStyleBackColor = true;
-            this._pickTextureButton.Click += new System.EventHandler(this._pickTextureButton_Click);
+            this._pickTextureButton.Click += new System.EventHandler(this.PickTextureButton_Click);
             // 
             // _splitEdgeButton
             // 
@@ -306,7 +315,7 @@
             this._splitEdgeButton.TabIndex = 4;
             this._splitEdgeButton.Text = "Split Edge";
             this._splitEdgeButton.UseVisualStyleBackColor = true;
-            this._splitEdgeButton.Click += new System.EventHandler(this._splitEdgeButton_Click);
+            this._splitEdgeButton.Click += new System.EventHandler(this.SplitEdgeButton_Click);
             // 
             // _movePolygonButton
             // 
@@ -316,7 +325,7 @@
             this._movePolygonButton.TabIndex = 2;
             this._movePolygonButton.Text = "Move";
             this._movePolygonButton.UseVisualStyleBackColor = true;
-            this._movePolygonButton.Click += new System.EventHandler(this._movePolygonButton_Click);
+            this._movePolygonButton.Click += new System.EventHandler(this.MovePolygonButton_Click);
             // 
             // _pickColorButton
             // 
@@ -326,7 +335,7 @@
             this._pickColorButton.TabIndex = 3;
             this._pickColorButton.Text = "Pick Color";
             this._pickColorButton.UseVisualStyleBackColor = true;
-            this._pickColorButton.Click += new System.EventHandler(this._pickColorButton_Click);
+            this._pickColorButton.Click += new System.EventHandler(this.PickColorButton_Click);
             // 
             // _removeVerticesButton
             // 
@@ -336,7 +345,7 @@
             this._removeVerticesButton.TabIndex = 1;
             this._removeVerticesButton.Text = "Remove Vertices";
             this._removeVerticesButton.UseVisualStyleBackColor = true;
-            this._removeVerticesButton.Click += new System.EventHandler(this._removeVerticesButton_Click);
+            this._removeVerticesButton.Click += new System.EventHandler(this.RemoveVerticesButton_Click);
             // 
             // _createPolyButton
             // 
@@ -346,23 +355,39 @@
             this._createPolyButton.TabIndex = 0;
             this._createPolyButton.Text = "Create Polygon";
             this._createPolyButton.UseVisualStyleBackColor = true;
-            this._createPolyButton.Click += new System.EventHandler(this._createPolyButton_Click);
+            this._createPolyButton.Click += new System.EventHandler(this.CreatePolyButton_Click);
             // 
-            // _minSpeedNumeric
+            // _lightHeightNumericUpDown
             // 
-            this._minSpeedNumeric.Location = new System.Drawing.Point(88, 22);
-            this._minSpeedNumeric.Name = "_minSpeedNumeric";
-            this._minSpeedNumeric.Size = new System.Drawing.Size(120, 23);
-            this._minSpeedNumeric.TabIndex = 2;
-            this._minSpeedNumeric.ValueChanged += new System.EventHandler(this._minSpeedNumeric_ValueChanged);
+            this._lightHeightNumericUpDown.Location = new System.Drawing.Point(100, 80);
+            this._lightHeightNumericUpDown.Maximum = new decimal(new int[] {
+            250000,
+            0,
+            0,
+            0});
+            this._lightHeightNumericUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this._lightHeightNumericUpDown.Name = "_lightHeightNumericUpDown";
+            this._lightHeightNumericUpDown.Size = new System.Drawing.Size(120, 23);
+            this._lightHeightNumericUpDown.TabIndex = 12;
+            this._lightHeightNumericUpDown.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this._lightHeightNumericUpDown.ValueChanged += new System.EventHandler(this.LightHeightNumericUpDown_ValueChanged);
             // 
-            // _maxSpeedNumeric
+            // _heightLabel
             // 
-            this._maxSpeedNumeric.Location = new System.Drawing.Point(88, 52);
-            this._maxSpeedNumeric.Name = "_maxSpeedNumeric";
-            this._maxSpeedNumeric.Size = new System.Drawing.Size(120, 23);
-            this._maxSpeedNumeric.TabIndex = 3;
-            this._maxSpeedNumeric.ValueChanged += new System.EventHandler(this._maxSpeedNumeric_ValueChanged);
+            this._heightLabel.AutoSize = true;
+            this._heightLabel.Location = new System.Drawing.Point(11, 82);
+            this._heightLabel.Name = "_heightLabel";
+            this._heightLabel.Size = new System.Drawing.Size(43, 15);
+            this._heightLabel.TabIndex = 11;
+            this._heightLabel.Text = "Height";
             // 
             // MainForm
             // 
@@ -378,14 +403,15 @@
             this._animationGroupBox.ResumeLayout(false);
             this._speedRangeGroupBox.ResumeLayout(false);
             this._speedRangeGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._maxSpeedNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._minSpeedNumeric)).EndInit();
             this._lightGroupBox.ResumeLayout(false);
             this._lightGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._mTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._ksTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._kdTrackBar)).EndInit();
             this._polygonGroupBox.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this._minSpeedNumeric)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._maxSpeedNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._lightHeightNumericUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -402,7 +428,6 @@
         private System.Windows.Forms.Button _createPolyButton;
         private System.Windows.Forms.GroupBox _lightGroupBox;
         private System.Windows.Forms.Button _pickLightColorButton;
-        private System.Windows.Forms.Button _setLightHeightButton;
         private System.Windows.Forms.Button _moveLightButton;
         private System.Windows.Forms.Button _pickTextureButton;
         private System.Windows.Forms.GroupBox _animationGroupBox;
@@ -420,5 +445,7 @@
         private System.Windows.Forms.Label _minSpeedRangeLabel;
         private System.Windows.Forms.NumericUpDown _maxSpeedNumeric;
         private System.Windows.Forms.NumericUpDown _minSpeedNumeric;
+        private System.Windows.Forms.NumericUpDown _lightHeightNumericUpDown;
+        private System.Windows.Forms.Label _heightLabel;
     }
 }

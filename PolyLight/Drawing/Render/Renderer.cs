@@ -15,7 +15,7 @@ namespace PolyLight.Drawing.Render
         private readonly PictureBox _pictureBox;
         private readonly Color _backgroundColor;
 
-        private Timer _timer;
+        private readonly Timer _timer;
         private bool _dirty = false;
 
         public Renderer(IDrawer drawer, PictureBox pictureBox, Color backgroundColor, Light light)
@@ -32,7 +32,7 @@ namespace PolyLight.Drawing.Render
                 Interval = 25,
             };
 
-            _timer.Tick += _timer_Tick;
+            _timer.Tick += Timer_Tick;
             _timer.Start();
         }
 
@@ -42,7 +42,7 @@ namespace PolyLight.Drawing.Render
             _dirty = true;
         }
         
-        private void _timer_Tick(object? sender, System.EventArgs e)
+        private void Timer_Tick(object? sender, System.EventArgs e)
         {
             if(_dirty)
             {
